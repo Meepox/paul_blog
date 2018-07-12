@@ -41,4 +41,6 @@ Rails.application.configure do
   
   #Ensure you have defined default url options in environment files.
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  
+  config.assets.prefix = "/dev-assets"
 end
