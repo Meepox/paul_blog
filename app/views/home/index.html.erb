@@ -1,0 +1,66 @@
+<h1 id='title1'>This is Home.</h1>
+<h3 class='weather'> Current Weather is: </h3>
+<h3 class='local-weather'> Current Local Weather is: </h3>
+
+
+<script>
+    var title = $('#title1');
+    title.on('click', changeTitleColor);
+    
+    function changeTitleColor(event){
+        $(this).css({color: getRandomColor()});
+    }
+    
+    function getRandomColor(){
+          return "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
+    }
+    
+
+    function getWeather(){
+        var lat = "17.7767";
+        var lon = "-122.4233";
+
+
+        $.ajax({
+            url: 'api/v1/weather',
+            type: 'GET',
+            data: { lat: lat, lon: lon} ,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log('got the weather!');
+                console.log(response)
+                $(".weather").text("It is currently "+ response["currently"]["temperature"] + " degrees in LA");
+            },
+            error: function (err) {
+        console.log(err);
+            }
+        });
+    }
+
+    getWeather();
+    
+    
+  
+    navigator.geolocation.getCurrentPosition(locationgranted)
+   
+    
+    function locationgranted(location){
+        var latitude = location.coords.latitude
+        var longitude = location.coords.logitude
+        $.ajax({
+            url: 'api/v1/weather',
+            type: 'GET',
+            data: { lat: latitude, lon: longitude} ,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log('got the weather!');
+                console.log(response)
+                $(".local-weather").text("Current location weather is: "+ response["currently"]["temperature"] + " degrees");
+            },
+            error: function (err) {
+        console.log(err);
+            }
+        });
+    }
+    
+</script>
